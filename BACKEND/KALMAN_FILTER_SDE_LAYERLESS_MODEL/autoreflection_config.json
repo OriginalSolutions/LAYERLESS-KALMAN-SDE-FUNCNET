@@ -1,0 +1,129 @@
+{
+  "enabled": true,
+  "analysis_mode": "TREND",
+  "update_interval_seconds": 5,
+  "output_file_path": "./pure_sde_data/reflection_state.json",
+
+  "trend_mode_settings": {
+    "accuracy_source": "Accuracy_ARIMAX",
+
+    // ┌─────────────────────────────────────────────────────────────────┐
+    // │ 📊 PARAMETRY ŚREDNICH KROCZĄCYCH                                 │
+    // │ short_MA: średnia z ostatnich 2 accuracy                         │
+    // │ long_MA: średnia z ostatnich 3 accuracy                          │
+    // │ (możesz zmienić na np. 5 i 10 dla mniej wrażliwego systemu)      │
+    // └─────────────────────────────────────────────────────────────────┘
+    "trend_lookback_short": 2,
+    "trend_lookback_long": 3,
+
+    // ┌─────────────────────────────────────────────────────────────────┐
+    // │ 🎯 GŁÓWNY WARUNEK ZAUFANIA                                       │
+    // │ Jeśli różnica >= +0.01% → TRUST (słuchaj modelu)                │
+    // │ Jeśli różnica < +0.01% → DISTRUST (odwróć prognozę)             │
+    // └─────────────────────────────────────────────────────────────────┘
+    "trust_threshold_percent": 0.01,
+
+    // ┌─────────────────────────────────────────────────────────────────┐
+    // │ ⚙️ WYŁĄCZONA MARTWA STREFA                                       │
+    // │ Nie ma "neutralnego" stanu - albo TRUST, albo DISTRUST           │
+    // └─────────────────────────────────────────────────────────────────┘
+    "dead_zone_threshold_percent": 0.0,
+
+    // ┌─────────────────────────────────────────────────────────────────┐
+    // │ 💪 SIŁA REAKCJI                                                  │
+    // │ Już przy +0.01% → pełne zaufanie (max_positive_factor = 1.0)    │
+    // │ Poniżej +0.01% → pełne odwrócenie (max_negative_factor = -1.0)  │
+    // └─────────────────────────────────────────────────────────────────┘
+    "full_trust_trend_percent": 0.01,
+    "full_contrarian_trend_percent": -0.01,
+
+    "max_positive_factor": 1.0,
+    "max_negative_factor": -1.0,
+
+    // ┌─────────────────────────────────────────────────────────────────┐
+    // │ ⚡ SZYBKA REAKCJA                                                │
+    // │ Minimalne wygładzanie (0.1) = natychmiastowa reakcja na zmiany   │
+    // │ (zwiększ do 0.5-0.7 jeśli zbyt nerwowe)                          │
+    // └─────────────────────────────────────────────────────────────────┘
+    "smoothing_factor": 0.1,
+
+    "ignore_zero_accuracy": true,
+    "min_samples_required": 2
+  },
+
+  "bollinger_state_mode_settings": {
+    "accuracy_source": "Accuracy_ARIMAX",
+    "bollinger_period": 20,
+    "bollinger_std_dev": 2.0,
+    "max_positive_factor": 0.25,
+    "max_negative_factor": -0.25,
+    "smoothing_factor": 0.75,
+    "bandwidth_filter": {
+      "enabled": true,
+      "min_bandwidth_threshold_percent": 0.01,
+      "max_bandwidth_threshold_percent": 10.0
+    },
+    "ignore_zero_accuracy": true
+  },
+
+  "simple_oscillator_settings": {
+    "accuracy_source": "Accuracy_ARIMAX",
+    "min_accuracy_change_percent": 0.5,
+    "max_positive_factor": 1.5,
+    "max_negative_factor": -1.0,
+    "smoothing_factor": 0.5,
+    "auto_reset_settings": {
+      "enabled": true,
+      "reset_after_inactive_minutes": 30
+    },
+    "ignore_zero_accuracy": true
+  },
+
+  "cyclical_strategy_settings": {
+    "half_cycle_duration_minutes": 45,
+    "max_positive_factor": 0.25,
+    "max_negative_factor": -0.25
+  },
+
+  "accuracy_volatility_guardrail": {
+    "enabled": true,
+    "accuracy_source": "Accuracy_ARIMAX",
+    "lookback_period": 20,
+    "volatility_threshold_percent": 5.0,
+    "min_samples_required": 15,
+    "ignore_zero_accuracy": true
+  },
+
+  "strategy_behavior_settings": {
+    // ┌─────────────────────────────────────────────────────────────────┐
+    // │ 🔥 MAKSYMALNA SIŁA ODWRÓCENIA                                    │
+    // │ 1.0 = 100% odwrócenie prognozy (wzrost → spadek, spadek → wzrost)│
+    // └─────────────────────────────────────────────────────────────────┘
+    "rebellion_strength": 0.1,   //  1.0
+
+    "emergency_shutdown": {
+      "enabled": true,
+      "consecutive_zero_accuracy_limit": 20,
+      "force_trust_on_shutdown": true
+    },
+    
+    "adaptive_rebellion": {
+      "enabled": false,
+      "min_strength": 0.3,
+      "max_strength": 1.0,
+      "adjust_based_on_accuracy": true
+    }
+  },
+
+  "kama_generation_parameters": {
+    "efficiency_ratio_period": 10,
+    "fast_ema_period": 2,
+    "slow_ema_period": 30
+  },
+
+  "logging_settings": {
+    "log_level": "INFO",
+    "log_state_changes": true,
+    "log_detailed_calculations": true
+  }
+}

@@ -1,0 +1,25 @@
+# Środowisko wirtualne Pythona
+venv/
+.venv/
+
+# Pliki cache Pythona
+__pycache__/
+*.pyc
+
+# Pliki logów generowane przez program
+*.log
+
+# Duże pliki z danymi HDF5
+*.h5
+*.hdf5
+
+# Zapisane stany modeli (checkpointy)
+*.pth
+model_checkpoints/
+
+# Pliki konfiguracyjne edytora/IDE
+.idea/
+.vscode/
+
+# Inne pliki generowane
+reflection_state.json

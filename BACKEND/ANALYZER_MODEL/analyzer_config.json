@@ -1,0 +1,52 @@
+{
+  "model_type": "feature_aware_sde",
+  "model_feature_columns": [
+    "prices", "volumes", "log_returns", "momentum_tema", "volatility"
+  ],
+  "system_data_directory": "../KALMAN_FILTER_SDE_LAYERLESS_MODEL/pure_sde_data",
+  "analyzer_lookback_minutes": 160,
+  "reanalysis_interval_seconds": 10,
+  "training_initial_epochs": 1,
+  "training_initial_lr": 1e-4,
+  "training_batch_size": 64,
+  "prediction_input_history_minutes": 60,
+  "model_normalization": "robust",
+  "sde_solver_method": "srk",
+  "sde_solver_rtol": 1e-3,
+  "sde_solver_atol": 1e-4,
+
+  "max_batches_per_epoch": null,
+  "training_log_frequency": 10,
+
+  "state_augmentation_settings": { "enabled": false },
+  
+  "sde_stability_settings": {
+    "theta_min": 0.01,
+    "theta_max": 5.0,
+    "sigma_min": 1e-4,
+    "sigma_max": 1.0
+  },
+  "stability_controls": {
+    "feature_weights_clamp_range": [
+      -2.0,
+      2.0
+    ]
+  },
+  "optimizer_settings": {
+    "name": "Adan",
+    "weight_decay": 0.1,
+    "betas": [
+      0.98,
+      0.99,
+      0.97
+    ]
+  },
+  "loss_settings": {
+    "name": "PriceOnlyMSELoss"
+  },
+  "system_version": "50.4-ANALYZER",
+  "system_log_level": "INFO",
+  "system_device": "cpu",
+  "storage_main_hdf5_filename": "sde_data.h5",
+  "storage_ai_feature_filename": "ai_features.h5"  
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI NEURAL SDE</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>AI NEURAL SDE</h1>
+   
+    <div class="main-chart-wrapper">
+        <div class="chart-container price-chart">
+            <canvas id="priceChart"></canvas>
+        </div>
+        <div class="chart-container accuracy-chart">
+            <canvas id="accuracyChart"></canvas>
+        </div>
+    </div>
+
+    <div class="controls-and-description">
+        <div id="controls">
+            <button id="live-mode-button" style="display: none;">Go to Live Mode</button>
+        </div>
+        <div class="description">
+            <p>{{ description | safe }}</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.0/dist/chartjs-plugin-zoom.min.js"></script>
+   
+    <!-- ### ZMIANA: Usunięto konfliktowy plugin 'crosshair' ### -->
+   
+    <script src="/static/chart.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+{
+  "architecture_version": "8.3-log-returns-fix",
+  "model_target_feature":  "log_returns",  // "log_returns",  "price_delta"
+
+
+  "kama_settings": {
+    "enabled": true,
+    "period": 3,
+    "fast_ema_period": 2,
+    "slow_ema_period": 4
+  },
+
+
+
+  "error_correction_module": {
+    "enabled": true,
+    "error_smoothing_factor": 0.05,  // 0.15 //  !!! 0.1, !!! ---->  Nowy_Błąd = (0.1 * Prognoza_ARIMAX) + (0.9 * Stary_Błąd)
+    "arimax_order_p":  2,  // 15
+    "arimax_order_d":  1,  //  3
+    "arimax_order_q":  2   // 15
+  },
+
+
+  "particle_smoother_settings": {
+    "enabled": true,
+    "num_particles": 500, // 12350000,
+    "process_noise_std": 15.0,       //  8.0    // Zwiększ elastyczność // 3200 --> znacza to, że do pozycji każdej z 50,000 cząsteczek zostanie dodana losowa liczba z rozkładu, gdzie typowe wartości wahają się od -3200 do +3200 dolarów.
+    "measurement_noise_std":  5.0,   // 15.0    // Zwiększ siłę wygładzania
+    "control_gain": -2.15            //  0.15   // Zwiększ szybkość reakcji na kierunek  // 0.6 --> gdy SDE wygeneruje odważną prognozę zmiany, filtr weźmie z niej aż 60%
+  },
+
+
+
+//  KALMA  FILTER
+
+"kalman_filter_settings": {
+  "initial_process_noise":      0.99,  // Zwiększ  - process_noise (ufaj mniej swojej starej, wewnętrznej pozycji)  // 0.001
+  "initial_measurement_noise":  0.01   // Zmniejsz -  Filtr bardzo ufa nowej prognozie z SDE   // 50.0
+},
+
+
+
+  "model_feature_columns": [
+    "prices",
+    "volumes",
+    "log_returns",
+    "momentum_tema",
+    "volatility",
+    "price_acceleration",
+    "momentum_oscillator",
+    "kama_log_returns",
+    "kama_price",
+    "price_kama_context",
+    "price_delta",
+    "ai_drift_prices",
+    "ai_diffusion_prices",
+    "ai_drift_volumes",
+    "ai_diffusion_volumes",
+    "ai_drift_log_returns",
+    "ai_diffusion_log_returns",
+    "ai_drift_momentum_tema",
+    "ai_diffusion_momentum_tema",
+    "ai_drift_volatility",
+    "ai_diffusion_volatility"
+  ],
+  
+  "base_feature_columns": [
+    "prices",
+    "volumes",
+    "log_returns",
+    "momentum_kama",
+    "volatility",
+    "kama_log_returns"
+  ],
+
+
+
+  "model_type": "kalman_guided_attention_sde", //"hybrid_attention_sde_with_kalman_attention", // "hybrid_attention_sde",
+  //  hybrid_attention_sde_with_kalman_attention --> SDE z atencją, która w środku ma Kalmana //
+  "model_normalization": "robust",
+  "sde_solver_method": "srk",
+  "clean_hdf5_on_start": false,
+  "sde_solver_time_steps": 1,
+  "sde_solver_rtol": 1e-5,
+  "sde_solver_atol": 1e-6,
+  "initial_training_fetch_limit": 60,
+  "online_training_history_minutes": 40,
+  "prediction_input_history_minutes": 20,
+  "prediction_horizon_minutes": 1,
+
+
+
+  "training_max_samples": 300,
+  "training_initial_epochs": 1,  // 5,
+  "training_batch_size": 32,
+  "max_batches_per_epoch": 10,
+  "training_initial_lr":  0.0001,       //  0.0005,
+  "training_log_frequency": 1,
+  "batch_progress_log_interval": 1,
+
+  "optimizer_settings": {
+    "name": "Adan",
+    "weight_decay": 0.1,
+    "betas": [0.98, 0.99, 0.97],
+    "use_lr_scheduler": false,  //true,
+    "lr_scheduler_name": "CyclicalLR",
+    "lr_scheduler_params": {
+      "base_lr": 1e-4,    //           1e-7
+      "max_lr":  2e-4,    // 1e-1      5e-4,
+      "step_size_up": 1   // 20           4
+    }
+  },
+
+
+
+  "online_learning_enabled":  false,           // true,
+  "online_learning_retrain_on_error": false,   // true,
+  "online_learning_retrain_on_wrong_direction": false,    // true,
+  "online_learning_error_threshold_percent": 0.03,  // 0.3
+  "online_learning_history_minutes": 80,
+  "online_learning_max_samples": 400,
+  "online_learning_fine_tune_lr": 0.0002,
+  "online_learning_fine_tune_epochs": 1,
+  "online_learning_update_checkpoint": true,
+
+
+
+  "loss_settings": {
+    "name": "DirectionalAccuracyLoss",
+    "use_log_mse": true,
+    "initial_weight_mse": 0.95,   //  0.01,
+    "initial_weight_dir": 0.05,   //  0.54,
+    "anti_copy_weight": 0.99      //  0.45
+  },
+
+
+
+  "feature_tema_period": 4,
+  "feature_volatility_window": 2,
+  "feature_fast_tema_period": 3,
+  "feature_slow_tema_period": 9,
+  "error_volatility_std_window": 5,
+  "error_volatility_tema_period": 5,
+
+
+
+  "data_management_symbol": "BTCUSDT",
+  "data_management_interval": "1m",
+  "system_version": "8.3-log-returns-fix",
+  "system_device": "cpu",
+  "system_log_level": "DEBUG", // "INFO",
+  "random_seed": 4294967294,   // Ustaw tutaj 42, 2^32-2 lub inną liczbę całkowitą
+  "system_data_directory": "./pure_sde_data",
+
+
+
+  "prediction_settings": {
+    "prediction_output_mode": "smoothed"
+  },
+  
+  "stability_controls": {
+    "explosion_guardrail_threshold": 0.3,
+    "feature_weights_clamp_range": [-3.0, 3.0]
+  },
+  
+  "sde_stability_settings": {
+    "use_rbf_kernel": true,
+    "kernel_response_mode": "inverse",
+    "use_error_correction": true,
+    "error_search_window": 180,
+    "error_prediction_tema_period": 45,
+    "error_iqr_multiplier": 421.5,
+    "error_correction_gain": 0.1397,
+
+    // === NOWY PARAMETR GWARANCJI MOCY ===
+    "velocity_min_gain": -0.1, //  -0.1 Strategia "Kontrariańska" //  0.7  // 0.2 = Gwarantuje, że komponent prędkości zawsze będzie miał co najmniej 20% mocy
+
+    "theta_min": 0.05,
+    "theta_max": 2.5,
+    "momentum_strength": 0.6,
+    "sigma_min": 1e-5,
+    "sigma_max": 2.3,
+    "diffusion_stabilizer": 0.215,
+    "kernel_width_min": 1e-4,
+    "kernel_exponent_coeff": -0.00005
+  },
+  
+  "attention_settings": {
+    "enabled": false,      // // Upewnij się, że atencja jest włączona dla tego modelu
+    "attention_dim": 32
+  },
+  
+  "state_augmentation_settings": {
+    "enabled": false,
+    "velocity_tema_period": 90,
+    "features_for_velocity": ["prices", "price_kama_context", "volatility"],
+    "volatility_state_source_feature": "volatility"
+  },
+  
+  "anti_inertia_module": {
+    "enabled": true,
+    "trigger_factor_threshold": 0.03,
+    "trigger_consecutive_moves": 2,
+    "anti_inertia_gain": 0.35
+  },
+  
+  "neutral_state_settings": {
+    "comment": "Ustawienia używane jako wartość startowa lub gdy sygnał z Nadzorcy jest niedostępny.",
+    "default_correction_factor": 2.5
+  }
+}

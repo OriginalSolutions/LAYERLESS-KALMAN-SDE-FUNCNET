@@ -1,0 +1,57 @@
+body {
+    font-family: 'Consolas', 'Monaco', monospace;
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #ffffff;
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+/* Główny wrapper dla obu wykresów */
+.main-chart-wrapper {
+    width: 95%;
+    max-width: 1400px;
+    margin: 3px auto;
+}
+
+/* Styl dla każdego z kontenerów wykresu */
+.chart-container {
+    width: 100%;
+    position: relative;
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    padding: 0 0px 0 0px;
+    box-sizing: border-box;
+}
+
+.price-chart {
+    height: 55vh; /* 55% wysokości ekranu */
+    border-radius: 8px 8px 0 0;
+    border-bottom: none; /* Usuwamy dolną ramkę, aby połączyć z dolnym wykresem */
+}
+
+.accuracy-chart {
+    height: 25vh; /* 20% wysokości ekranu */
+    border-radius: 0 0 8px 8px;
+}
+
+
+.controls-and-description {
+    width: 95%;
+    max-width: 1400px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.description {
+    color: #aaaaaa;
+    text-align: justify;
+    line-height: 1.6;
+} 
