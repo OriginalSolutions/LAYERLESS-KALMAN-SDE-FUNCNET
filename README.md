@@ -86,18 +86,19 @@ nohup python3 -u visualization_updater.py > visualization_updater.log 2>&1 &
 **2. Run the Analyzer (AI Feature Producer)**
 
 In a second terminal, navigate to the analyzer directory:
-```bash
+```bash  
 cd BACKEND/ANALYZER_MODEL
 
-nohup python3 -u run_analyzer.py > run_analyzer.log 2>&1 &
+nohup python3 -u run_analyzer.py > run_analyzer.log 2>&1 & 
 ```
 
 **3. Run the User Interface**
 
-In a third terminal, navigate to the frontend directory:```bash
+In a third terminal, navigate to the frontend directory:
+```bash 
 cd FRONTEND
 
-nohup uvicorn run_frontend:app --host 127.0.0.1 --port 8050 > frontend.log 2>&1 &
+nohup uvicorn run_frontend:app --host 127.0.0.1 --port 8050 > frontend.log 2>&1 & 
 ```
 
 **4. Accessing the Application**
