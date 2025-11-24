@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Tuple, Deque, Dict, List, Optional, Any
 from sklearn.impute import SimpleImputer
 
-# Importy z Twojego projektu
+# Importy z projektu
 from config_loader import Config
 from hdf5_manager import UltraAdvancedHDF5Manager
 from binance_websocket_provider import BinanceWebsocketProvider
