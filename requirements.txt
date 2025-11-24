@@ -1,35 +1,84 @@
-# Core scientific and ML stack (flexible versions)
+# --- Core Math & Data ---
+
+# Fundamental library for array computing and mathematical operations.
+# Used in: Almost all scripts (NEURAL, learning_engine, hdf5_manager, etc.).
 numpy
+
+# Data manipulation and time-series analysis library.
+# Used in: NEURAL__sde_pure_gaussian_process.py, visualization_updater.py, 
+# feature_engineering.py, run_frontend.py.
 pandas
+
+# Advanced scientific computing library (dependency for statsmodels/scikit-learn).
+# Implicitly required for statistical calculations.
 scipy
-scikit_learn
+
+# Machine Learning tools for preprocessing (SimpleImputer, RobustScaler).
+# Used in: NEURAL__sde_pure_gaussian_process.py, learning_engine.py.
+scikit-learn
+
+# Statistical modeling library (specifically for ARIMA models).
+# Used in: NEURAL__sde_pure_gaussian_process.py (for error correction).
 statsmodels
+
+# Low-level HDF5 file handling.
+# Used in: hdf5_manager.py, accuracy_monitor.py, visualization_updater.py.
 h5py
+
+# Technical Analysis indicators (e.g., KAMA).
+# Used in: visualization_updater.py.
 pandas_ta
 
-# PyTorch ecosystem (flexible versions)
+# --- PyTorch Ecosystem ---
+
+# Main Deep Learning framework (tensors, neural networks).
+# Used in: learning_engine.py, sde_models.py, particle_smoother.py.
 torch
-torchvision
+
+# Library for solving Stochastic Differential Equations (SDE).
+# Used in: learning_engine.py (provides the 'sdeint' solver).
 torchsde
+
+# Advanced optimizer (Adan).
+# Used in: learning_engine.py (imported inside a try-except block).
 adan_pytorch==0.1.0
 
-# Dependencies for Fairseq (let pip handle them)
-fairseq==0.12.2
-omegaconf
+# --- API & Web (Frontend/Backend) ---
 
-# API and Web
+# Web framework for building the visualization API.
+# Used in: run_frontend.py.
 fastapi==0.121.2
+
+# ASGI server implementation to run the FastAPI app.
+# Used in: run_frontend.py.
 uvicorn==0.38.0
-Requests==2.32.5
+
+# Template engine for rendering HTML files.
+# Used in: run_frontend.py.
+jinja2
+
+# HTTP library for making REST API calls.
+# Used in: rest_api_fetcher.py.
+requests==2.32.5
+
+# WebSocket client for real-time data streaming.
+# Used in: binance_websocket_provider.py.
 websocket_client==1.8.0
 
-# Other utilities (fixed versions are usually fine)
-apex==0.9.10dev
+# --- Utilities ---
+
+# Parser for JSON files that contain comments (// or #).
+# Used in: config_loader.py, autoreflection_strategist.py.
 commentjson==0.9.0
-Pillow==12.0.0
+
+# System monitoring tool (RAM usage).
+# Used in: NEURAL__sde_pure_gaussian_process.py.
 psutil==7.0.0
-python_binance==1.0.29
-pytz==2025.2
-PyYAML==6.0.3
+
+# Library for packaging Python projects.
+# Required for installing certain dependencies correctly.
 setuptools==80.9.0
-wandb==0.23.0
+
+# Timezone definitions (standard dependency for Pandas time-series).
+# Implicitly used by Pandas in run_frontend.py.
+pytz==2025.2
