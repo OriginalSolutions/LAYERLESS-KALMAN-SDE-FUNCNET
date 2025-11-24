@@ -1,4 +1,4 @@
-# main.py -- WERSJA: OSTATECZNA FINALNA (Poprawione Nazwy + Pełen Odczyt)
+# run_frontend.py
 
 import h5py
 import numpy as np
